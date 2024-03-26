@@ -8,8 +8,8 @@
 import SwiftUI
 
 struct ContentView: View {
-    @State private var inputUnit = "Celsius"
-    @State private var outputUnit = "Celsius"
+    @State private var inputUnit = Units.Celsius
+    @State private var outputUnit = Units.Celsius
     @State private var inputValue = 0.0
     
     private var fahrenheitToCelsius: Double {
@@ -32,45 +32,47 @@ struct ContentView: View {
     }
     private var outputValue: Double {
         switch inputUnit {
-        case "Celsius":
-            if outputUnit == "Celsius" {
+        case .Celsius:
+            if outputUnit == .Celsius {
                 return inputValue
-            } else if outputUnit == "Fahrenheit" {
+            } else if outputUnit == .Fahrenheit {
                 return celsiusToFahrenheit
-            } else if outputUnit == "Kelvin" {
+            } else if outputUnit == .Kelvin {
                 return celsiusToKelvin
             }
-        case "Fahrenheit":
-            if outputUnit == "Celsius" {
+        case .Fahrenheit:
+            if outputUnit == .Celsius {
                 return fahrenheitToCelsius
-            } else if outputUnit == "Fahrenheit" {
+            } else if outputUnit == .Fahrenheit {
                 return inputValue
-            } else if outputUnit == "Kelvin" {
+            } else if outputUnit == .Kelvin {
                 return fahrenheitToKelvin
             }
-        case "Kelvin":
-            if outputUnit == "Celsius" {
+        case .Kelvin:
+            if outputUnit == .Celsius {
                 return kelvinToCelsius
-            } else if outputUnit == "Fahrenheit" {
+            } else if outputUnit == .Fahrenheit {
                 return kelvinToFahrenheit
-            } else if outputUnit == "Kelvin" {
+            } else if outputUnit == .Kelvin {
                 return inputValue
             }
-        default:
-            return 0.0
         }
         return 0.0
     }
     
-    let units = ["Celsius", "Fahrenheit", "Kelvin"]
+    enum Units: CaseIterable {
+        case Celsius
+        case Fahrenheit
+        case Kelvin
+    }
     
     var body: some View {
         NavigationStack {
             Form {
                 Section("Input unit") {
                     Picker("Select the input unit", selection: $inputUnit) {
-                        ForEach(units, id: \.self) {
-                            Text($0)
+                        ForEach(Units.allCases, id: \.self) {
+                            Text("\($0)")
                         }
                     }
                     .pickerStyle(.segmented)
@@ -82,8 +84,8 @@ struct ContentView: View {
                 
                 Section("Desired output unit") {
                     Picker("Select the input unit", selection: $outputUnit) {
-                        ForEach(units, id: \.self) {
-                            Text($0)
+                        ForEach(Units.allCases, id: \.self) {
+                            Text("\($0)")
                         }
                     }
                     .pickerStyle(.segmented)
