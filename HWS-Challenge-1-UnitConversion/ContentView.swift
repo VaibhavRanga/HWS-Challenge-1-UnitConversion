@@ -11,6 +11,7 @@ struct ContentView: View {
     @State private var inputUnit = Units.Celsius
     @State private var outputUnit = Units.Celsius
     @State private var inputValue = 0.0
+    @FocusState private var keyboardFocus: Bool
     
     private var fahrenheitToCelsius: Double {
         return ((inputValue - 32) * 5) / 9
@@ -80,6 +81,8 @@ struct ContentView: View {
                 
                 Section("Enter input value") {
                     TextField("Enter input value", value: $inputValue, format: .number)
+                        .keyboardType(.decimalPad)
+                        .focused($keyboardFocus)
                 }
                 
                 Section("Desired output unit") {
@@ -96,6 +99,13 @@ struct ContentView: View {
                 }
             }
             .navigationTitle("Temperature Converter")
+            .toolbar {
+                if keyboardFocus {
+                    Button("Done") {
+                        keyboardFocus = false
+                    }
+                }
+            }
         }
     }
 }
